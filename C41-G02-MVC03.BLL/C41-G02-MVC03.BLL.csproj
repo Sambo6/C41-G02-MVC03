@@ -5,4 +5,8 @@
     <RootNamespace>C41_G02_MVC03.BLL</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\C41-G02-MVC03.DAL\C41-G02-MVC03.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
