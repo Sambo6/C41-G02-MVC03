@@ -10,10 +10,17 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.DAL.Data
 {
-    internal class ApplicationDbContext :DbContext
+    public class ApplicationDbContext :DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Server = .;Database = MVC01; Trusted_Connection = True");
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            
+        }
+
+        // Traditional Way 
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //    => optionsBuilder.UseSqlServer("Server = .;Database = MVC01; Trusted_Connection = True");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
