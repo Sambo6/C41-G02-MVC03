@@ -44,5 +44,19 @@ namespace C41_G02_MVC03.PL.Controllers
             }
             return View(department);
         }
+
+        [HttpGet]
+        public IActionResult Details(int? id) 
+        {
+            if (id is null)
+                return BadRequest();
+
+            var department = _departmentRepo.Get(id.Value);
+            if (department is null)
+            {
+                return NotFound();
+            }
+            return View(department);
+        } 
     }
 }
