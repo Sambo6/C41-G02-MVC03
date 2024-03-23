@@ -9,6 +9,8 @@ namespace C41_G02_MVC03.PL.Controllers
     {
 
         private readonly IDepartmentRepository _departmentRepo;
+
+
         //Dependence injection
         public DepartmentController(IDepartmentRepository departmentRepo)
         {
@@ -27,6 +29,20 @@ namespace C41_G02_MVC03.PL.Controllers
         {
 
             return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Department department)
+        {
+
+            if (ModelState.IsValid) // Server Side Validation
+            {
+                var count = _departmentRepo.Add(department);
+                if (count > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            return View(department);
         }
     }
 }

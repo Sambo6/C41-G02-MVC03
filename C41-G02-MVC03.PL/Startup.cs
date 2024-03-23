@@ -1,3 +1,5 @@
+using C41_G02_MVC03.BLL.Interfaces;
+using C41_G02_MVC03.BLL.Repositories;
 using C41_G02_MVC03.DAL.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +33,6 @@ namespace C41_G02_MVC03.PL
 
             //services.AddTransient<ApplicationDbContext>(); //(Every object) has (request and connections)
 
-            services.AddScoped<ApplicationDbContext>(); // (One Object) for (requests)
 
             //services.AddSingleton<ApplicationDbContext>(); //Connection with Data base will be opened for time 
 
@@ -43,7 +44,8 @@ namespace C41_G02_MVC03.PL
                 
                 Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            
+
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // (One Object) for (requests)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
