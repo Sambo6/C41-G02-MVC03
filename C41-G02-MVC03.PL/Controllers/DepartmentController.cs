@@ -113,5 +113,25 @@ namespace C41_G02_MVC03.PL.Controllers
                 return View(department);
             }
         }
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            return Details(id,"Delete");
         }
+        [HttpPost]
+        public IActionResult Delete([FromRoute]int? id , Department department)
+        {
+
+            try
+            {
+                _departmentRepo.Delete(department);
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception ex)
+            {
+                return View("Error", ex.Message);
+            }
+        }
+    }
+
 }
