@@ -1,5 +1,6 @@
 ﻿using C41_G02_MVC03.BLL.Interfaces;
 using C41_G02_MVC03.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -83,7 +84,8 @@ namespace C41_G02_MVC03.PL.Controllers
         }
 
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Edit([FromRoute]int id ,  Department department)
         {
             if(id != department.Id)
