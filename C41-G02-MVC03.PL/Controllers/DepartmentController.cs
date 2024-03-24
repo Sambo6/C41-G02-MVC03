@@ -38,7 +38,7 @@ namespace C41_G02_MVC03.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(Employee department)
         {
 
             if (ModelState.IsValid) // Server Side Validation
@@ -86,7 +86,7 @@ namespace C41_G02_MVC03.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Edit([FromRoute]int id ,  Department department)
+        public IActionResult Edit([FromRoute]int id ,  Employee department)
         {
             if(id != department.Id)
                 return BadRequest();
@@ -119,7 +119,7 @@ namespace C41_G02_MVC03.PL.Controllers
             return Details(id,"Delete");
         }
         [HttpPost]
-        public IActionResult Delete([FromRoute]int? id , Department department)
+        public IActionResult Delete([FromRoute]int? id , Employee department)
         {
 
             try

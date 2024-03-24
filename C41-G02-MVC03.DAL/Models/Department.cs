@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace C41_G02_MVC03.DAL.Models
 {
     //Model
-    public class Department
+    public class Employee
     {
         public int Id { get; set; }
         [Required]

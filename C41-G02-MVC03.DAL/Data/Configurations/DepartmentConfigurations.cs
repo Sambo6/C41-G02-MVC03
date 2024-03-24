@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.DAL.Data.Configurations
 {
-    internal class DepartmentConfigurations : IEntityTypeConfiguration<Department>
+    internal class DepartmentConfigurations : IEntityTypeConfiguration<Employee>
     {
-        public void Configure(EntityTypeBuilder<Department> builder)
+        public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.Property(D => D.Id).UseIdentityColumn(10,10);
             builder.Property(D => D.Code).HasColumnType("varchar").HasMaxLength(50).IsRequired();
