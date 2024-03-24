@@ -41,7 +41,7 @@
                         <a asp-controller="Department" asp-action="Edit" asp-route-id="@department.Id" class="btn btn-success"><i class="fas fa-edit mr-1"></i>Update</a>
                     </td>
                     <td>
-                        //For pop-Up Use this onclick="return confirm('Are you sure to delete This Department : @department.Name')"
+                        
                         <a asp-controller="Department" asp-action="Delete" asp-route-id="@department.Id" class="btn btn-danger" >
                             <i class="fas fa-trash mr-1"></i>Delete</a>
 
@@ -51,6 +51,7 @@
         </tbody>
     </table>
 }
+
 else
 {
     <div class="mt-3 alert alert-warning">
