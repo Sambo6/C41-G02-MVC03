@@ -5,31 +5,27 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System;
+
 namespace C41_G02_MVC03.PL.Controllers
 {
-    // Inheritance :  DepartmentController is a Controller
-    // Composition :  DepartmentController is DepartmentRepository
-    public class DepartmentController : Controller
+    public class EmployeeController : Controller
     {
-
-        private readonly IDepartmentRepository _departmentRepo;
+        private readonly IEmployeeRepository _employeeRepo;
         private readonly IWebHostEnvironment _env;
 
-
-
         //Dependence injection
-        public DepartmentController(IDepartmentRepository departmentRepo, IWebHostEnvironment env)
+        public EmployeeController(IEmployeeRepository employeeRepo, IWebHostEnvironment env)
         {
-            _departmentRepo = departmentRepo;
+            _employeeRepo = employeeRepo;
             _env = env;
         }
 
-        // /Department/Index
+        // /Employee/Index
         public IActionResult Index()
         {
             // 4 Overload
-            var departments = _departmentRepo.GetAll();
-            return View(departments);
+            var employees = _employeeRepo.GetAll();
+            return View(employees);
         }
 
         public IActionResult Create()
@@ -38,37 +34,36 @@ namespace C41_G02_MVC03.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(Employee employee)
         {
-
             if (ModelState.IsValid) // Server Side Validation
             {
-                var count = _departmentRepo.Add(department);
+                var count = _employeeRepo.Add(employee);
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View(department);
+            return View(employee);
         }
 
         [HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details") 
+        public IActionResult Details(int? id, string ViewName = "Details")
         {
             if (id is null)
                 return BadRequest();
 
-            var department = _departmentRepo.Get(id.Value);
-            if (department is null)
+            var employee = _employeeRepo.Get(id.Value);
+            if (employee is null)
             {
                 return NotFound();
             }
-            return View(ViewName,department);
+            return View(ViewName, employee);
         }
-        // /Department/Edit/
+        // /Employee/Edit/
         [HttpGet]
-        
-        public IActionResult Edit(int? id)  
+
+        public IActionResult Edit(int? id)
         {
 
             return Details(id, "Edit");
@@ -76,19 +71,19 @@ namespace C41_G02_MVC03.PL.Controllers
             //// خلي بالك هنا نغسها نفس ال  (Details )
             ///if (!id.HasValue)
             ///    return BadRequest(); //400            
-            ///var department = _departmentRepo.Get(id.Value);
-            ///if(department is null)
+            ///var Employee = _EmployeeRepo.Get(id.Value);
+            ///if(Employee is null)
             ///    return NotFound(); //404
-            ///return View(department);
-            
+            ///return View(Employee);
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Edit([FromRoute]int id ,  Department department)
+        public IActionResult Edit([FromRoute] int id, Employee employee)
         {
-            if(id != department.Id)
+            if (id != employee.Id)
                 return BadRequest();
 
 
@@ -97,7 +92,7 @@ namespace C41_G02_MVC03.PL.Controllers
 
             try
             {
-                _departmentRepo.Update(department);
+                _employeeRepo.Update(employee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -108,30 +103,29 @@ namespace C41_G02_MVC03.PL.Controllers
                 if (_env.IsDevelopment())
                     ModelState.AddModelError(string.Empty, ex.Message);
                 else
-                    ModelState.AddModelError(string.Empty, "There are an Error during Updating the Department");
+                    ModelState.AddModelError(string.Empty, "There are an Error during Updating the Employee");
 
-                return View(department);
+                return View(employee);
             }
         }
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            return Details(id,"Delete");
+            return Details(id, "Delete");
         }
         [HttpPost]
-        public IActionResult Delete([FromRoute]int? id , Department department)
+        public IActionResult Delete([FromRoute] int? id, Employee employee)
         {
 
             try
             {
-                _departmentRepo.Delete(department);
+                _employeeRepo.Delete(employee);
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", ex.Message);
             }
         }
     }
-
 }
