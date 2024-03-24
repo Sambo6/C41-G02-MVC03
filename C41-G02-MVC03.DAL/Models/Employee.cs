@@ -16,9 +16,9 @@ namespace C41_G02_MVC03.DAL.Models
         FullTime =1,
         PartTime =2,
     }
-    public class Employee
+    public class Employee : ModelBase
     {
-        public int Id { get; set; }
+        
         [Required]
         [MaxLength(50, ErrorMessage = "Max Length Is 50 Chars.")]
         [MinLength(3)]
@@ -38,7 +38,6 @@ namespace C41_G02_MVC03.DAL.Models
         public string PhoneNumber { get; set; }
         public DateTime HireDate { get; set; }
         public Gender Gender { get; set; }
-        public DateTime CreationDate { get; set; }= DateTime.Now;
         public bool IsDeleted { get; set; }
         public EmpType EmployeeType { get; set; }
     }
