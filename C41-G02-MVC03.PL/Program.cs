@@ -11,9 +11,14 @@ namespace C41_G02_MVC03.PL
 {
     public class Program
     {
+        //Entry Point
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build()
+                //Data Seeding [Insert some data
+                // Apply Migrations
+                
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

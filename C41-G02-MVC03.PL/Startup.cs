@@ -1,9 +1,14 @@
+using C41_G02_MVC03.BLL.Interfaces;
+using C41_G02_MVC03.BLL.Repositories;
+using C41_G02_MVC03.DAL.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +18,34 @@ namespace C41_G02_MVC03.PL
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the DepInj container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(); // Required by MVC
+
+
+            //services.AddTransient<ApplicationDbContext>(); //(Every object) has (request and connections)
+
+
+            //services.AddSingleton<ApplicationDbContext>(); //Connection with Data base will be opened for time 
+
+            //services.AddScoped<DbContextOptions<ApplicationDbContext>>();
+
+            // Dependence Injection
+            services.AddDbContext<ApplicationDbContext>(Options =>
+            {
+                
+                Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // (One Object) for (requests)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
