@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,10 @@ namespace C41_G02_MVC03.DAL.Models
 {
     public enum Gender
     {
-        Male = 1 , Female = 2
+        [EnumMember(Value = "Male")]
+        Male = 1 ,
+        [EnumMember(Value = "Female")]
+        Female = 2
     }
     public enum EmpType
     {
@@ -21,14 +25,14 @@ namespace C41_G02_MVC03.DAL.Models
         
         [Required]
         [MaxLength(50, ErrorMessage = "Max Length Is 50 Chars.")]
-        [MinLength(3)]
+        [MinLength(5)]
         public string Name { get; set; }
         [Range(22, 60, ErrorMessage = "Age Must Be Between 22 And 60.")]
         public int Age { get; set; }
+        public string Address { get; set; }
         [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
 
-        public string Address { get; set; }
         [Display (Name="Is Active")]
         public bool IsActive { get; set; }
         [EmailAddress]
@@ -38,7 +42,8 @@ namespace C41_G02_MVC03.DAL.Models
         public string PhoneNumber { get; set; }
         public DateTime HireDate { get; set; }
         public Gender Gender { get; set; }
-        public bool IsDeleted { get; set; }
         public EmpType EmployeeType { get; set; }
+        [Display(Name = "Date Of Creation")]
+        public DateTime CreationDate { get; set; } = DateTime.Now;
     }
 }

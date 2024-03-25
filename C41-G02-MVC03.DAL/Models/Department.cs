@@ -15,7 +15,8 @@ namespace C41_G02_MVC03.DAL.Models
         public string Code { get; set; }
         [Required]
         public string Name { get; set; }
-        
 
+        [Display(Name = "Date Of Creation")]
+        public DateTime DateOfCreation { get; set; }
     }
 }

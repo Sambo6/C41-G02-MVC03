@@ -1,4 +1,5 @@
 ﻿using C41_G02_MVC03.BLL.Interfaces;
+using C41_G02_MVC03.DAL.Data.Migrations;
 using C41_G02_MVC03.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +32,7 @@ namespace C41_G02_MVC03.PL.Controllers
             var departments = _departmentRepo.GetAll();
             return View(departments);
         }
-
+        [HttpGet]
         public IActionResult Create()
         {
 
@@ -40,7 +41,6 @@ namespace C41_G02_MVC03.PL.Controllers
         [HttpPost]
         public IActionResult Create(Department department)
         {
-
             if (ModelState.IsValid) // Server Side Validation
             {
                 var count = _departmentRepo.Add(department);
@@ -51,28 +51,24 @@ namespace C41_G02_MVC03.PL.Controllers
             }
             return View(department);
         }
-
         [HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details") 
+        public IActionResult Details(int? id, string ViewName = "Details")
         {
             if (id is null)
                 return BadRequest();
-
             var department = _departmentRepo.Get(id.Value);
             if (department is null)
             {
                 return NotFound();
             }
-            return View(ViewName,department);
+            return View(ViewName, department);
         }
         // /Department/Edit/
         [HttpGet]
-        
-        public IActionResult Edit(int? id)  
+
+        public IActionResult Edit(int? id)
         {
-
             return Details(id, "Edit");
-
             //// خلي بالك هنا نغسها نفس ال  (Details )
             ///if (!id.HasValue)
             ///    return BadRequest(); //400            
@@ -80,21 +76,18 @@ namespace C41_G02_MVC03.PL.Controllers
             ///if(department is null)
             ///    return NotFound(); //404
             ///return View(department);
-            
-        }
 
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Edit([FromRoute]int id ,  Department department)
+        public IActionResult Edit([FromRoute] int id, Department department)
         {
-            if(id != department.Id)
+            if (id != department.Id)
                 return BadRequest();
 
-
-            if (!ModelState.IsValid)
-                return View();
-
+            if (!ModelState.IsValid) //Server Side Validation 
+                return View(department);
             try
             {
                 _departmentRepo.Update(department);
@@ -104,22 +97,20 @@ namespace C41_G02_MVC03.PL.Controllers
             {
                 //1.Log Exception
                 //2. Type Friendly message
-
                 if (_env.IsDevelopment())
                     ModelState.AddModelError(string.Empty, ex.Message);
                 else
                     ModelState.AddModelError(string.Empty, "There are an Error during Updating the Department");
-
                 return View(department);
             }
         }
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            return Details(id,"Delete");
+            return Details(id, "Delete");
         }
         [HttpPost]
-        public IActionResult Delete([FromRoute]int? id , Department department)
+        public IActionResult Delete([FromRoute] int? id, Department department)
         {
 
             try
@@ -127,9 +118,13 @@ namespace C41_G02_MVC03.PL.Controllers
                 _departmentRepo.Delete(department);
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return View("Error", ex.Message);
+                if (_env.IsDevelopment())
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                else
+                    ModelState.AddModelError(string.Empty, "Error during Update the Department");
+                return View(department);
             }
         }
     }

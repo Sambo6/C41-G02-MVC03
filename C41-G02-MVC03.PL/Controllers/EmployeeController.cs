@@ -3,6 +3,7 @@ using C41_G02_MVC03.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Hosting;
 using System;
 
@@ -12,6 +13,8 @@ namespace C41_G02_MVC03.PL.Controllers
     {
         private readonly IEmployeeRepository _employeeRepo;
         private readonly IWebHostEnvironment _env;
+
+
 
         //Dependence injection
         public EmployeeController(IEmployeeRepository employeeRepo, IWebHostEnvironment env)
@@ -27,7 +30,7 @@ namespace C41_G02_MVC03.PL.Controllers
             var employees = _employeeRepo.GetAll();
             return View(employees);
         }
-
+        [HttpGet]
         public IActionResult Create()
         {
 
@@ -46,13 +49,11 @@ namespace C41_G02_MVC03.PL.Controllers
             }
             return View(employee);
         }
-
         [HttpGet]
         public IActionResult Details(int? id, string ViewName = "Details")
         {
             if (id is null)
                 return BadRequest();
-
             var employee = _employeeRepo.Get(id.Value);
             if (employee is null)
             {
@@ -65,19 +66,16 @@ namespace C41_G02_MVC03.PL.Controllers
 
         public IActionResult Edit(int? id)
         {
-
             return Details(id, "Edit");
-
             //// خلي بالك هنا نغسها نفس ال  (Details )
             ///if (!id.HasValue)
             ///    return BadRequest(); //400            
-            ///var Employee = _EmployeeRepo.Get(id.Value);
-            ///if(Employee is null)
+            ///var employee = _employeeRepo.Get(id.Value);
+            ///if(employee is null)
             ///    return NotFound(); //404
             ///return View(Employee);
 
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -85,11 +83,8 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (id != employee.Id)
                 return BadRequest();
-
-
             if (!ModelState.IsValid)
-                return View();
-
+                return View(employee);
             try
             {
                 _employeeRepo.Update(employee);
@@ -99,12 +94,10 @@ namespace C41_G02_MVC03.PL.Controllers
             {
                 //1.Log Exception
                 //2. Type Friendly message
-
                 if (_env.IsDevelopment())
                     ModelState.AddModelError(string.Empty, ex.Message);
                 else
                     ModelState.AddModelError(string.Empty, "There are an Error during Updating the Employee");
-
                 return View(employee);
             }
         }
@@ -124,7 +117,11 @@ namespace C41_G02_MVC03.PL.Controllers
             }
             catch (Exception ex)
             {
-                return View("Error", ex.Message);
+                if (_env.IsDevelopment())
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                else
+                    ModelState.AddModelError(string.Empty, "Error during Update the Employee");
+                return View(employee);
             }
         }
     }

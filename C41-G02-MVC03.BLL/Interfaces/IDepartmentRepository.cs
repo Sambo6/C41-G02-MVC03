@@ -9,6 +9,6 @@ namespace C41_G02_MVC03.BLL.Interfaces
 {
     public interface IDepartmentRepository : IGenericRepository<Department>
     {
-
+        
     }
 }
