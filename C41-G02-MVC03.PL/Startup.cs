@@ -46,6 +46,7 @@ namespace C41_G02_MVC03.PL
             });
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // (One Object) for (requests)
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>(); // (One Object) for (requests)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
