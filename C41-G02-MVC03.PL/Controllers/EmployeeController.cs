@@ -27,6 +27,11 @@ namespace C41_G02_MVC03.PL.Controllers
         public IActionResult Index()
         {
             // 4 Overload
+            //1.ViewData
+            ViewData["Message"] = "ViewData I'm a Dictionary : Used To  Binding Data ";
+            //2.ViewBag
+            ViewBag.Messege = "ViewBay I'm a Dynamic property : Used To  Binding Data ";
+
             var employees = _employeeRepo.GetAll();
             return View(employees);
         }
