@@ -43,9 +43,7 @@ namespace C41_G02_MVC03.PL.Controllers
             {
                 var count = _employeeRepo.Add(employee);
                 if (count > 0)
-                {
                     return RedirectToAction(nameof(Index));
-                }
             }
             return View(employee);
         }
@@ -56,9 +54,8 @@ namespace C41_G02_MVC03.PL.Controllers
                 return BadRequest();
             var employee = _employeeRepo.Get(id.Value);
             if (employee is null)
-            {
                 return NotFound();
-            }
+
             return View(ViewName, employee);
         }
         // /Employee/Edit/
@@ -67,24 +64,17 @@ namespace C41_G02_MVC03.PL.Controllers
         public IActionResult Edit(int? id)
         {
             return Details(id, "Edit");
-            //// خلي بالك هنا نغسها نفس ال  (Details )
-            ///if (!id.HasValue)
-            ///    return BadRequest(); //400            
-            ///var employee = _employeeRepo.Get(id.Value);
-            ///if(employee is null)
-            ///    return NotFound(); //404
-            ///return View(Employee);
-
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public IActionResult Edit([FromRoute] int id, Employee employee)
         {
             if (id != employee.Id)
                 return BadRequest();
+
             if (!ModelState.IsValid)
                 return View(employee);
+
             try
             {
                 _employeeRepo.Update(employee);

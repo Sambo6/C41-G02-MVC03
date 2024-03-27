@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<Employee>
-
-@{
-    ViewData["Title"] = "Employees";
-
-}
+@{ViewData["Title"] = "Employees";}
 
 <h1>All Employees </h1>
 <br />
@@ -46,16 +42,7 @@
                     <td>@Html.DisplayFor(E => Employee.Email)</td>
                     <td>@Html.DisplayFor(E => Employee.Gender)</td>
 
-                    <td>
-                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@Employee.Id" class="btn btn-warning"><i class="fas fa-eye mr-1"></i>Details</a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Employee.Id" class="btn btn-success"><i class="fas fa-edit mr-1"></i>Update</a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Delete" asp-route-id="@Employee.Id" class="btn btn-danger"><i class="fas fa-trash mr-1"></i>Delete</a>
-
-                    </td>
+                    <partial name="_ButtonPartial" model="@Employee.Id"/>
                 </tr>
             }
         </tbody>

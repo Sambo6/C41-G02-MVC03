@@ -3,16 +3,12 @@ using C41_G02_MVC03.BLL.Repositories;
 using C41_G02_MVC03.DAL.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace C41_G02_MVC03.PL
 {
@@ -23,30 +19,17 @@ namespace C41_G02_MVC03.PL
         {
             Configuration = configuration;
         }
-
-
         // This method gets called by the runtime. Use this method to add services to the DepInj container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews(); // Required by MVC
-
-
-            //services.AddTransient<ApplicationDbContext>(); //(Every object) has (request and connections)
-
-
-            //services.AddSingleton<ApplicationDbContext>(); //Connection with Data base will be opened for time 
-
-            //services.AddScoped<DbContextOptions<ApplicationDbContext>>();
-
-            // Dependence Injection
-            services.AddDbContext<ApplicationDbContext>(Options =>
-            {
-                
-                Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
-
             services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // (One Object) for (requests)
             services.AddScoped<IEmployeeRepository, EmployeeRepository>(); // (One Object) for (requests)
+            // Dependence Injection
+            services.AddDbContext<ApplicationDbContext>(Options =>
+            {  
+                Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,11 +47,7 @@ namespace C41_G02_MVC03.PL
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

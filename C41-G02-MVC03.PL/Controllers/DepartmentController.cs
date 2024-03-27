@@ -45,9 +45,7 @@ namespace C41_G02_MVC03.PL.Controllers
             {
                 var count = _departmentRepo.Add(department);
                 if (count > 0)
-                {
                     return RedirectToAction(nameof(Index));
-                }
             }
             return View(department);
         }
@@ -69,18 +67,10 @@ namespace C41_G02_MVC03.PL.Controllers
         public IActionResult Edit(int? id)
         {
             return Details(id, "Edit");
-            //// خلي بالك هنا نغسها نفس ال  (Details )
-            ///if (!id.HasValue)
-            ///    return BadRequest(); //400            
-            ///var department = _departmentRepo.Get(id.Value);
-            ///if(department is null)
-            ///    return NotFound(); //404
-            ///return View(department);
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public IActionResult Edit([FromRoute] int id, Department department)
         {
             if (id != department.Id)
@@ -123,7 +113,7 @@ namespace C41_G02_MVC03.PL.Controllers
                 if (_env.IsDevelopment())
                     ModelState.AddModelError(string.Empty, ex.Message);
                 else
-                    ModelState.AddModelError(string.Empty, "Error during Update the Department");
+                    ModelState.AddModelError(string.Empty, "Error during Deleting the Department");
                 return View(department);
             }
         }
