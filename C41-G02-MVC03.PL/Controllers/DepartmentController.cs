@@ -44,8 +44,13 @@ namespace C41_G02_MVC03.PL.Controllers
             if (ModelState.IsValid) // Server Side Validation
             {
                 var count = _departmentRepo.Add(department);
+
                 if (count > 0)
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Department is Created Successfully";
+                else
+                    TempData["Message"] = "Error While Creating the Department";
+
+                return RedirectToAction(nameof(Index));
             }
             return View(department);
         }

@@ -27,10 +27,10 @@ namespace C41_G02_MVC03.PL.Controllers
         public IActionResult Index()
         {
             // 4 Overload
-            //1.ViewData
-            ViewData["Message"] = "ViewData I'm a Dictionary : Used To  Binding Data ";
-            //2.ViewBag
-            ViewBag.Messege = "ViewBay I'm a Dynamic property : Used To  Binding Data ";
+            ///1.ViewData
+           /// ViewData["Message"] = "ViewData I'm a Dictionary : Used To  Binding Data ";
+            ///2.ViewBag
+            ///ViewBag.Message = "ViewBay I'm a Dynamic property : Used To  Binding Data ";
 
             var employees = _employeeRepo.GetAll();
             return View(employees);
@@ -47,8 +47,19 @@ namespace C41_G02_MVC03.PL.Controllers
             if (ModelState.IsValid) // Server Side Validation
             {
                 var count = _employeeRepo.Add(employee);
+
+                //3.TempData
+
                 if (count > 0)
-                    return RedirectToAction(nameof(Index));
+                {
+                    TempData["Message"] = "Employee is Created Successfully";
+                }
+                else
+                {
+                    TempData["Message"] = "Employee is Not Created";
+                }
+                return RedirectToAction(nameof(Index));
+
             }
             return View(employee);
         }

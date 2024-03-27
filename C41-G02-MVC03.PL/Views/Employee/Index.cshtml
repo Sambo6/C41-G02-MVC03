@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<Employee>
 @{ViewData["Title"] = "Employees";}
 
-
-
-<div class="alert alert-warning">
+<div class="alert alert-primary">
+    @TempData["Message"]
+</div>
     @*@ViewBag.Message
     @ViewData["Message"]*@
-</div>
 
 <h1>All Employees </h1>
 <br />
