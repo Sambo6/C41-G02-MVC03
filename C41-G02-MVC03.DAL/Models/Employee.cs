@@ -52,5 +52,10 @@ namespace C41_G02_MVC03.DAL.Models
         public EmpType EmployeeType { get; set; }
         [Display(Name = "Date Of Creation")]
         public DateTime CreationDate { get; set; } = DateTime.Now;
+
+        public int? DepartmentId { get; set; } //Foreign Key
+
+        //Nav property ==> [One]
+        public virtual Department Department { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
 
 namespace C41_G02_MVC03.PL.Controllers
 {
@@ -21,24 +22,26 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             _employeeRepo = employeeRepo;
             _env = env;
+
         }
 
         // /Employee/Index
-        public IActionResult Index()
+        public IActionResult Index(string SearchInput)
         {
-            // 4 Overload
-            ///1.ViewData
-           /// ViewData["Message"] = "ViewData I'm a Dictionary : Used To  Binding Data ";
-            ///2.ViewBag
-            ///ViewBag.Message = "ViewBay I'm a Dynamic property : Used To  Binding Data ";
+            var employees = Enumerable.Empty<Employee>();
+            if (string.IsNullOrEmpty(SearchInput))
+                 employees = _employeeRepo.GetAll();
+                
+            else
+                 employees =_employeeRepo.SearchByName(SearchInput.ToLower() );
 
-            var employees = _employeeRepo.GetAll();
             return View(employees);
         }
         [HttpGet]
         public IActionResult Create()
         {
-
+            
+            
             return View();
         }
         [HttpPost]
@@ -79,6 +82,7 @@ namespace C41_G02_MVC03.PL.Controllers
 
         public IActionResult Edit(int? id)
         {
+
             return Details(id, "Edit");
         }
         [HttpPost]
