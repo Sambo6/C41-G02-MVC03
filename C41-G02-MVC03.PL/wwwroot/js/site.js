@@ -19,5 +19,5 @@ SearchInput.addEventListener("keyup", function () {
 		xhr.send();
 	}
 	run();
-
+	
 })
