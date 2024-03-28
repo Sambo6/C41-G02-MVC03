@@ -17,11 +17,6 @@ namespace C41_G02_MVC03.DAL.Data
             
         }
 
-        //[ Traditional Way ]
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //    => optionsBuilder.UseSqlServer("Server = .;Database = MVC01; Trusted_Connection = True");
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
           =>  modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         

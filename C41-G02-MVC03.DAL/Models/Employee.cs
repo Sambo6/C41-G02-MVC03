@@ -5,26 +5,13 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace C41_G02_MVC03.DAL.Models
 {
-    public enum Gender
-    {
-        [EnumMember(Value = "Male")]
-        Male = 1 ,
-        [EnumMember(Value = "Female")]
-        Female = 2
-    }
-    public enum EmpType
-    {
-        [EnumMember(Value = "Full Time")]
-        FullTime =1,
-        [EnumMember(Value = "Part Time")]
-        PartTime =2,
-    }
+
+
     public class Employee : ModelBase
     {
-        
+
         [Required]
         [MaxLength(50, ErrorMessage = "Max Length Is 50 Chars.")]
         [MinLength(5)]
@@ -36,8 +23,7 @@ namespace C41_G02_MVC03.DAL.Models
         public string Address { get; set; }
         [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
-
-        [Display (Name="Is Active")]
+        [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
         [EmailAddress]
         public string Email { get; set; }
@@ -45,13 +31,10 @@ namespace C41_G02_MVC03.DAL.Models
         [RegularExpression(@"^(\+201|01|00201)[0-2,5]{1}[0-9]{8}")]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
-
         [Display(Name = "Hiring Date")]
         public DateTime HireDate { get; set; }
-        public Gender Gender { get; set; }
-        public EmpType EmployeeType { get; set; }
         [Display(Name = "Date Of Creation")]
-        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime CreationDate { get; set; } 
 
         public int? DepartmentId { get; set; } //Foreign Key
 

@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace C41_G02_MVC03.BLL.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : ModelBase
@@ -33,17 +35,24 @@ namespace C41_G02_MVC03.BLL.Repositories
         }
         public T Get(int id)
         {
-            //Find Have Overloaded 
-            //return _dbContext.Set<T>().Find(id);
 
             return _dbContext.Find<T>(id); // EF CORE 3.1 Feature
         }
-        virtual public IEnumerable<T> GetAll()
-                    => _dbContext.Set<T>().AsNoTracking().ToList();
+         public IEnumerable<T> GetAll()
+        {
+            if (typeof(T) == typeof(Employee))
+            {
+                return (IEnumerable<T>) _dbContext.Employees.Include(E => E.Department).AsNoTracking().ToList();
+            }
+            else
+            {
+                return _dbContext.Set<T>().AsNoTracking().ToList();
+            }
+        }
+
 
         public int Delete(T entity)
         {
-            //_dbContext.Set<T>().Remove(entity);
             _dbContext.Remove(entity);
             return _dbContext.SaveChanges();
         }
