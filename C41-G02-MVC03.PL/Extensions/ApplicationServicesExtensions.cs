@@ -1,0 +1,19 @@
+﻿using C41_G02_MVC03.BLL.Interfaces;
+using C41_G02_MVC03.BLL.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace C41_G02_MVC03.PL.Extensions
+{
+    public static class ApplicationServicesExtensions
+    {
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services) 
+        {
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>(); // (One Object) for (requests)
+
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>(); // (One Object) for (requests)
+
+            return services;
+        }
+
+    }
+}

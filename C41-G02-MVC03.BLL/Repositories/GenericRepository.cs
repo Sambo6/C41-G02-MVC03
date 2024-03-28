@@ -2,6 +2,7 @@
 using C41_G02_MVC03.DAL.Data;
 using C41_G02_MVC03.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,11 +38,9 @@ namespace C41_G02_MVC03.BLL.Repositories
 
             return _dbContext.Find<T>(id); // EF CORE 3.1 Feature
         }
-        public IEnumerable<T> GetAll()
-        {
+        virtual public IEnumerable<T> GetAll()
+                    => _dbContext.Set<T>().AsNoTracking().ToList();
 
-            return _dbContext.Set<T>().AsNoTracking().ToList();
-        }
         public int Delete(T entity)
         {
             //_dbContext.Set<T>().Remove(entity);
