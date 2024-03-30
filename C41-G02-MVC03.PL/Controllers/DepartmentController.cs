@@ -28,7 +28,7 @@ namespace C41_G02_MVC03.PL.Controllers
         public IActionResult Index()
         {
             // 4 Overload
-            var departments = _unitOfWork.DepartmentRepository.GetAll();
+            var departments = _unitOfWork.Repository<Department>().GetAll();
             return View(departments);
         }
         [HttpGet]
@@ -42,7 +42,7 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (ModelState.IsValid) // Server Side Validation
             {
-                _unitOfWork.DepartmentRepository.Add(department);
+                _unitOfWork.Repository<Department>().Add(department);
                 var count = _unitOfWork.Complete();
                 if (count > 0)
                     TempData["Message"] = "Department is Created Successfully";
@@ -58,7 +58,7 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (id is null)
                 return BadRequest();
-            var department = _unitOfWork.DepartmentRepository.Get(id.Value);
+            var department = _unitOfWork.Repository<Department>().Get(id.Value);
             if (department is null)
             {
                 return NotFound();
@@ -84,7 +84,7 @@ namespace C41_G02_MVC03.PL.Controllers
                 return View(department);
             try
             {
-                _unitOfWork.DepartmentRepository.Update(department);
+                _unitOfWork.Repository<Department>().Update(department);
                 _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
@@ -110,7 +110,7 @@ namespace C41_G02_MVC03.PL.Controllers
 
             try
             {
-                _unitOfWork.DepartmentRepository.Delete(department);
+                _unitOfWork.Repository<Department>().Delete(department);
                 _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
