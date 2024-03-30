@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using C41_G02_MVC03.BLL.Interfaces;
+using C41_G02_MVC03.BLL.Repositories;
+using C41_G02_MVC03.DAL.Data.Migrations;
 using C41_G02_MVC03.DAL.Models;
 using C41_G02_MVC03.PL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -10,18 +12,19 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Employee = C41_G02_MVC03.DAL.Models.Employee;
 
 namespace C41_G02_MVC03.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
         //Dependence injection
-        public EmployeeController(IEmployeeRepository employeeRepo, IMapper mapper,IWebHostEnvironment env)
+        public EmployeeController(IUnitOfWork unitOfWork, IMapper mapper,IWebHostEnvironment env)
         {
-            _employeeRepo = employeeRepo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _env = env;
         }
@@ -31,9 +34,9 @@ namespace C41_G02_MVC03.PL.Controllers
             var employees = Enumerable.Empty<Employee>();
 
             if (string.IsNullOrEmpty(SearchInput))
-                employees = _employeeRepo.GetAll();
+                employees = _unitOfWork.EmployeeRepository.GetAll();
             else
-                employees = _employeeRepo.SearchByName(SearchInput.ToLower());
+                employees = _unitOfWork.EmployeeRepository.SearchByName(SearchInput.ToLower());
 
             var mappedEmps = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
 
@@ -51,7 +54,9 @@ namespace C41_G02_MVC03.PL.Controllers
             {
 
                  var mappedEmp = _mapper.Map<EmployeeViewModel,Employee>(employeeVM);
-                 var count = _employeeRepo.Add(mappedEmp);
+
+                _unitOfWork.EmployeeRepository.Add(mappedEmp);
+                var count = _unitOfWork.Complete();
                 //3.TempData
                 if (count > 0)
                 {
@@ -69,7 +74,7 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (id is null)
                 return BadRequest();
-            var employee = _employeeRepo.Get(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
             var mappedEmp = _mapper.Map<Employee, EmployeeViewModel>(employee);
             if (employee is null)
                 return NotFound();
@@ -95,7 +100,8 @@ namespace C41_G02_MVC03.PL.Controllers
             {
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
-                _employeeRepo.Update(mappedEmp);
+                _unitOfWork.EmployeeRepository.Update(mappedEmp);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -121,7 +127,8 @@ namespace C41_G02_MVC03.PL.Controllers
             {
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
-                _employeeRepo.Delete(mappedEmp);
+                _unitOfWork.EmployeeRepository.Delete(mappedEmp);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

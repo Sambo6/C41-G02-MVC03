@@ -21,18 +21,11 @@ namespace C41_G02_MVC03.BLL.Repositories
             _dbContext = dbContext;
         }
 
-        public int Add(T entity)
-        {
-            //_dbContext.Set<T>().Add(entity);
-            _dbContext.Add(entity);
-            return _dbContext.SaveChanges();
-        }
-        public int Update(T entity)
-        {
-            //_dbContext.Set<T>().Update(entity); ;
-            _dbContext.Update(entity); //EF 3.1
-            return _dbContext.SaveChanges();
-        }
+        public void Add(T entity)
+               => _dbContext.Add(entity);
+
+        public void Update(T entity)
+           => _dbContext.Update(entity); //EF 3.1
         public T Get(int id)
         {
 
@@ -49,12 +42,7 @@ namespace C41_G02_MVC03.BLL.Repositories
                 return _dbContext.Set<T>().AsNoTracking().ToList();
             }
         }
-
-
-        public int Delete(T entity)
-        {
-            _dbContext.Remove(entity);
-            return _dbContext.SaveChanges();
-        }
+        public void Delete(T entity)
+            => _dbContext.Remove(entity);
     }
 }

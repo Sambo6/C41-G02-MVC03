@@ -12,16 +12,15 @@ namespace C41_G02_MVC03.PL.Controllers
     // Composition :  DepartmentController is DepartmentRepository
     public class DepartmentController : Controller
     {
-
-        private readonly IDepartmentRepository _departmentRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
 
 
 
         //Dependence injection
-        public DepartmentController(IDepartmentRepository departmentRepo, IWebHostEnvironment env)
+        public DepartmentController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
         {
-            _departmentRepo = departmentRepo;
+            _unitOfWork = unitOfWork;
             _env = env;
         }
 
@@ -29,7 +28,7 @@ namespace C41_G02_MVC03.PL.Controllers
         public IActionResult Index()
         {
             // 4 Overload
-            var departments = _departmentRepo.GetAll();
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
             return View(departments);
         }
         [HttpGet]
@@ -43,8 +42,8 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (ModelState.IsValid) // Server Side Validation
             {
-                var count = _departmentRepo.Add(department);
-
+                _unitOfWork.DepartmentRepository.Add(department);
+                var count = _unitOfWork.Complete();
                 if (count > 0)
                     TempData["Message"] = "Department is Created Successfully";
                 else
@@ -59,7 +58,7 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (id is null)
                 return BadRequest();
-            var department = _departmentRepo.Get(id.Value);
+            var department = _unitOfWork.DepartmentRepository.Get(id.Value);
             if (department is null)
             {
                 return NotFound();
@@ -85,7 +84,8 @@ namespace C41_G02_MVC03.PL.Controllers
                 return View(department);
             try
             {
-                _departmentRepo.Update(department);
+                _unitOfWork.DepartmentRepository.Update(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -110,7 +110,8 @@ namespace C41_G02_MVC03.PL.Controllers
 
             try
             {
-                _departmentRepo.Delete(department);
+                _unitOfWork.DepartmentRepository.Delete(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
