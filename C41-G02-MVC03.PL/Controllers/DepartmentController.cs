@@ -1,4 +1,5 @@
 ﻿using C41_G02_MVC03.BLL.Interfaces;
+using C41_G02_MVC03.DAL.Data.Migrations;
 using C41_G02_MVC03.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -11,16 +12,15 @@ namespace C41_G02_MVC03.PL.Controllers
     // Composition :  DepartmentController is DepartmentRepository
     public class DepartmentController : Controller
     {
-
-        private readonly IDepartmentRepository _departmentRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
 
 
 
         //Dependence injection
-        public DepartmentController(IDepartmentRepository departmentRepo, IWebHostEnvironment env)
+        public DepartmentController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
         {
-            _departmentRepo = departmentRepo;
+            _unitOfWork = unitOfWork;
             _env = env;
         }
 
@@ -28,10 +28,10 @@ namespace C41_G02_MVC03.PL.Controllers
         public IActionResult Index()
         {
             // 4 Overload
-            var departments = _departmentRepo.GetAll();
+            var departments = _unitOfWork.Repository<Department>().GetAll();
             return View(departments);
         }
-
+        [HttpGet]
         public IActionResult Create()
         {
 
@@ -40,96 +40,87 @@ namespace C41_G02_MVC03.PL.Controllers
         [HttpPost]
         public IActionResult Create(Department department)
         {
-
             if (ModelState.IsValid) // Server Side Validation
             {
-                var count = _departmentRepo.Add(department);
+                _unitOfWork.Repository<Department>().Add(department);
+                var count = _unitOfWork.Complete();
                 if (count > 0)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                    TempData["Message"] = "Department is Created Successfully";
+                else
+                    TempData["Message"] = "Error While Creating the Department";
+
+                return RedirectToAction(nameof(Index));
             }
             return View(department);
         }
-
         [HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details") 
+        public IActionResult Details(int? id, string ViewName = "Details")
         {
             if (id is null)
                 return BadRequest();
-
-            var department = _departmentRepo.Get(id.Value);
+            var department = _unitOfWork.Repository<Department>().Get(id.Value);
             if (department is null)
             {
                 return NotFound();
             }
-            return View(ViewName,department);
+            return View(ViewName, department);
         }
         // /Department/Edit/
         [HttpGet]
-        
-        public IActionResult Edit(int? id)  
-        {
 
+        public IActionResult Edit(int? id)
+        {
             return Details(id, "Edit");
 
-            //// خلي بالك هنا نغسها نفس ال  (Details )
-            ///if (!id.HasValue)
-            ///    return BadRequest(); //400            
-            ///var department = _departmentRepo.Get(id.Value);
-            ///if(department is null)
-            ///    return NotFound(); //404
-            ///return View(department);
-            
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public IActionResult Edit([FromRoute]int id ,  Department department)
+        public IActionResult Edit([FromRoute] int id, Department department)
         {
-            if(id != department.Id)
+            if (id != department.Id)
                 return BadRequest();
 
-
-            if (!ModelState.IsValid)
-                return View();
-
+            if (!ModelState.IsValid) //Server Side Validation 
+                return View(department);
             try
             {
-                _departmentRepo.Update(department);
+                _unitOfWork.Repository<Department>().Update(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 //1.Log Exception
                 //2. Type Friendly message
-
                 if (_env.IsDevelopment())
                     ModelState.AddModelError(string.Empty, ex.Message);
                 else
                     ModelState.AddModelError(string.Empty, "There are an Error during Updating the Department");
-
                 return View(department);
             }
         }
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            return Details(id,"Delete");
+            return Details(id, "Delete");
         }
         [HttpPost]
-        public IActionResult Delete([FromRoute]int? id , Department department)
+        public IActionResult Delete([FromRoute] int? id, Department department)
         {
 
             try
             {
-                _departmentRepo.Delete(department);
+                _unitOfWork.Repository<Department>().Delete(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return View("Error", ex.Message);
+                if (_env.IsDevelopment())
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                else
+                    ModelState.AddModelError(string.Empty, "Error during Deleting the Department");
+                return View(department);
             }
         }
     }

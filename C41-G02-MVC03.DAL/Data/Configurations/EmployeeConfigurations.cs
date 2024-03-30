@@ -15,8 +15,10 @@ namespace C41_G02_MVC03.DAL.Data.Configurations
         {
             //Fluent APIs :
             builder.Property(D => D.Name).HasColumnType("varchar").HasMaxLength(50).IsRequired();
-            builder.Property(D => D.Address).IsRequired();
+            builder.Property(D => D.Address).IsRequired(); 
+            builder.Property(e => e.Salary).HasColumnType("decimal(12,2)");
 
+                
         }
     }
 }

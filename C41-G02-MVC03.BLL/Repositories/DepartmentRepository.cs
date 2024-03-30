@@ -10,47 +10,11 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.BLL.Repositories
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
     {
-         private readonly ApplicationDbContext _dbContext;
-        public DepartmentRepository(ApplicationDbContext dbContext) //Ask CLR to create Object from "ApplicationDbContext"
-        {
-            _dbContext = dbContext;
-        }
-
-        public int Add(Department entity)
-        {
-            _dbContext.Departments.Add(entity);
-            return _dbContext.SaveChanges();
-        }
-
-        public int Update(Department entity)
-        {
-            _dbContext.Departments.Update(entity); ;
-            return _dbContext.SaveChanges();
-        }
-
-
-        public Department Get(int id)
-        {
-            //Find Have Overloaded 
-            //return _dbContext.Departments.Find(id);
-
-            return _dbContext.Find<Department>(id); // EF CORE 3.1 Feature
-        }
-
-        public IEnumerable<Department> GetAll()
+        public DepartmentRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
 
-            return _dbContext.Departments.AsNoTracking().ToList();
         }
-
-        public int Delete(Department entity)
-        {
-            _dbContext.Departments.Remove(entity);
-            return _dbContext.SaveChanges();
-        }
-
-
     }
 }

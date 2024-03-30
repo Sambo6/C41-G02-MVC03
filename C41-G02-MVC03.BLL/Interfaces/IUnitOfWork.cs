@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.BLL.Interfaces
 {
-    public interface IDepartmentRepository : IGenericRepository<Department>
+    public interface IUnitOfWork :IDisposable
     {
         
+        IGenericRepository<T> Repository<T>() where T : ModelBase;
+        public int Complete();
+
     }
 }

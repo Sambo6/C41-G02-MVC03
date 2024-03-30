@@ -1,14 +1,14 @@
-﻿@model Department
+﻿@model EmployeeViewModel
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete The Employee";
 }
 
-<h1>Are you sure to Delete Department </h1>
+<h1>Are you sure to Delete Employee </h1>
 
 
 <form asp-action="Delete">
     <input hidden asp-for="Id" />
-    
+
     <partial name="PartialView/DetailsDeleteDepartmentPartial" />
 
     <div>
@@ -16,4 +16,5 @@
         <a asp-action="Index" class="btn btn-outline-info">Cancel</a>
     </div>
 </form>
+
 
