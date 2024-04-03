@@ -8,6 +8,8 @@ namespace C41_G02_MVC03.PL.ViewModels
 {
     public class EmployeeViewModel
     {
+
+
         public int Id { get; set; }
         [Required]
         [MaxLength(50, ErrorMessage = "Max Length Is 50 Chars.")]
