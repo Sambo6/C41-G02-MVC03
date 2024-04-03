@@ -3,11 +3,13 @@ using C41_G02_MVC03.BLL.Interfaces;
 using C41_G02_MVC03.BLL.Repositories;
 using C41_G02_MVC03.DAL.Data.Migrations;
 using C41_G02_MVC03.DAL.Models;
+using C41_G02_MVC03.PL.Helper;
 using C41_G02_MVC03.PL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -52,21 +54,18 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (ModelState.IsValid) // Server Side Validation
             {
+                 employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "Images");
 
                  var mappedEmp = _mapper.Map<EmployeeViewModel,Employee>(employeeVM);
-
                 _unitOfWork.Repository<Employee>().Add(mappedEmp);
                 var count = _unitOfWork.Complete();
                 //3.TempData
                 if (count > 0)
                 {
-                    TempData["Message"] = "Employee is Created Successfully";
+                    return RedirectToAction(nameof(Index));
                 }
-                else
-                {
-                    TempData["Message"] = "Employee is Not Created";
-                }
-                return RedirectToAction(nameof(Index));
+
+
             }
             return View(employeeVM);
         }
