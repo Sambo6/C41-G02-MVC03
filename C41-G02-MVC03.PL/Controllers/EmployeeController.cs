@@ -34,7 +34,6 @@ namespace C41_G02_MVC03.PL.Controllers
             var employees = Enumerable.Empty<Employee>();
             var employeeRepo = _unitOfWork.Repository<Employee>() as EmployeeRepository;
             if (string.IsNullOrEmpty(SearchInput))
-
                 employees = employeeRepo.GetAll();
             else
                 employees = employeeRepo.SearchByName(SearchInput.ToLower());

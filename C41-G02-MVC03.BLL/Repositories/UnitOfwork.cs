@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.BLL.Repositories
 {
-    public class UnitOfWork : IUnitOfWork 
+    public class UnitOfWork : IUnitOfWork ,IDisposable
     {
         private readonly ApplicationDbContext _dbContext;
 
