@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Employee = C41_G02_MVC03.DAL.Models.Employee;
 
 namespace C41_G02_MVC03.PL.Controllers
@@ -73,10 +74,14 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             if (id is null)
                 return BadRequest();
+
             var employee = _unitOfWork.Repository<Employee>().Get(id.Value);
             var mappedEmp = _mapper.Map<Employee, EmployeeViewModel>(employee);
+
             if (employee is null)
                 return NotFound();
+            if(ViewName.Equals("Delete",StringComparison.OrdinalIgnoreCase))
+                TempData["ImageName"]=employee.ImageName;
 
             return View(ViewName, mappedEmp);
         }
@@ -124,11 +129,17 @@ namespace C41_G02_MVC03.PL.Controllers
         {
             try
             {
+                employeeVM.ImageName = TempData["ImageName"] as string;
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
                 _unitOfWork.Repository<Employee>().Delete(mappedEmp);
-                _unitOfWork.Complete();
+                var Count = _unitOfWork.Complete();
+                if (Count >0)
+                {
+                    DocumentSettings.DeleteFile(employeeVM.ImageName,"Images");   
                 return RedirectToAction(nameof(Index));
+                }
+                return View(employeeVM);
             }
             catch (Exception ex)
             {
