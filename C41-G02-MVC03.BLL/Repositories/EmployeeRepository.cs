@@ -18,8 +18,11 @@ namespace C41_G02_MVC03.BLL.Repositories
             return _dbContext.Employees.Where(E => E.Address.ToLowerInvariant() == address.ToLowerInvariant());
             //Fast Way ::    .Where(E => E.Address.Equals(address));
         }
-        public  IEnumerable<Employee> GetAll()
-        => _dbContext.Employees.Include(E => E.Department).ToList();
+        public async Task<IEnumerable<Employee>> GetAllAsync()
+        {
+            return await _dbContext.Employees.Include(E => E.Department).ToListAsync();
+        
+        }
 
         public IQueryable<Employee> SearchByName(string name)
             => _dbContext.Employees.Where(E => E.Name.ToLower().Contains(name));

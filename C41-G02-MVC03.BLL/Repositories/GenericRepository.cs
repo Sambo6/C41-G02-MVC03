@@ -22,27 +22,24 @@ namespace C41_G02_MVC03.BLL.Repositories
         }
 
         public void Add(T entity)
-               => _dbContext.Add(entity);
+             => _dbContext.Set<T>().Add(entity);
 
         public void Update(T entity)
-           => _dbContext.Update(entity); //EF 3.1
-        public T Get(int id)
-        {
+           => _dbContext.Set<T>().Update(entity); //EF 3.1
 
-            return _dbContext.Find<T>(id); // EF CORE 3.1 Feature
-        }
-         public IEnumerable<T> GetAll()
+        public async Task<T> GetAsync(int id)
+            => await _dbContext.Set<T>().FindAsync(id);
+
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             if (typeof(T) == typeof(Employee))
-            {
+
                 return (IEnumerable<T>) _dbContext.Employees.Include(E => E.Department).AsNoTracking().ToList();
-            }
             else
-            {
-                return _dbContext.Set<T>().AsNoTracking().ToList();
-            }
+                return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+
         }
         public void Delete(T entity)
-            => _dbContext.Remove(entity);
+            => _dbContext.Set<T>().Remove(entity);
     }
 }

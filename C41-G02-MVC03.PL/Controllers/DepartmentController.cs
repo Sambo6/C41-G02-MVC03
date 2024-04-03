@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading.Tasks;
 namespace C41_G02_MVC03.PL.Controllers
 {
     // Inheritance :  DepartmentController is a Controller
@@ -25,10 +26,10 @@ namespace C41_G02_MVC03.PL.Controllers
         }
 
         // /Department/Index
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // 4 Overload
-            var departments = _unitOfWork.Repository<Department>().GetAll();
+            var departments = await  _unitOfWork.Repository<Department>().GetAllAsync();
             return View(departments);
         }
         [HttpGet]
@@ -38,12 +39,12 @@ namespace C41_G02_MVC03.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department department)
+        public async Task<IActionResult> Create(Department department)
         {
             if (ModelState.IsValid) // Server Side Validation
             {
                 _unitOfWork.Repository<Department>().Add(department);
-                var count = _unitOfWork.Complete();
+                var count = await _unitOfWork.Complete();
                 if (count > 0)
                     TempData["Message"] = "Department is Created Successfully";
                 else
@@ -54,11 +55,11 @@ namespace C41_G02_MVC03.PL.Controllers
             return View(department);
         }
         [HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id, string ViewName = "Details")
         {
             if (id is null)
                 return BadRequest();
-            var department = _unitOfWork.Repository<Department>().Get(id.Value);
+            var department = await _unitOfWork.Repository<Department>().GetAsync(id.Value);
             if (department is null)
             {
                 return NotFound();
@@ -68,14 +69,14 @@ namespace C41_G02_MVC03.PL.Controllers
         // /Department/Edit/
         [HttpGet]
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return Details(id, "Edit");
+            return await Details(id, "Edit");
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, Department department)
+        public async Task<IActionResult> Edit([FromRoute] int id, Department department)
         {
             if (id != department.Id)
                 return BadRequest();
@@ -85,7 +86,7 @@ namespace C41_G02_MVC03.PL.Controllers
             try
             {
                 _unitOfWork.Repository<Department>().Update(department);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -100,18 +101,18 @@ namespace C41_G02_MVC03.PL.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
         [HttpPost]
-        public IActionResult Delete([FromRoute] int? id, Department department)
+        public async Task<IActionResult> Delete([FromRoute] int? id, Department department)
         {
 
             try
             {
                 _unitOfWork.Repository<Department>().Delete(department);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

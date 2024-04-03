@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.PL.Helper
 {
     public static class DocumentSettings
     {
-        public static string UploadFile(IFormFile file,string FolderName)
+        public static async Task<string> UploadFile(IFormFile file,string FolderName)
         {
             //  1.Get loaded folder Path
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot\\files",FolderName);
@@ -22,7 +23,7 @@ namespace C41_G02_MVC03.PL.Helper
 
             // 4.Safe File As Stream[Data per time]
             using var fileStream = new FileStream(filePath,FileMode.Create);
-            file.CopyTo(fileStream);
+            await file.CopyToAsync(fileStream);
             return fileName;
         }
 
