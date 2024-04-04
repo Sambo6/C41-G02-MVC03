@@ -1,9 +1,11 @@
 
 using C41_G02_MVC03.DAL.Data;
+using C41_G02_MVC03.DAL.Models;
 using C41_G02_MVC03.PL.Extensions;
 using C41_G02_MVC03.PL.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,7 @@ namespace C41_G02_MVC03.PL
         // This method gets called by the runtime. Use this method to add services to the DepInj container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddControllersWithViews(); // Required by MVC
             // Dependence Injection
             services.AddDbContext<ApplicationDbContext>(Options =>
@@ -31,6 +34,8 @@ namespace C41_G02_MVC03.PL
             });
             services.AddApplicationServices(); //Extension method
             services.AddAutoMapper(M =>M.AddProfile(new MappingProfiles()));
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
