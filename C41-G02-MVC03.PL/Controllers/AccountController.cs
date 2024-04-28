@@ -3,6 +3,7 @@ using C41_G02_MVC03.DAL.Models;
 using C41_G02_MVC03.PL.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.PL.Controllers
@@ -12,14 +13,14 @@ namespace C41_G02_MVC03.PL.Controllers
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
 
-		public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager)
-        {
+		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 		}
 
-        #region SignUp
-        public IActionResult SignUp()
+		#region SignUp
+		public IActionResult SignUp()
 		{
 			return View();
 		}
@@ -40,16 +41,16 @@ namespace C41_G02_MVC03.PL.Controllers
 						IsAgree = model.IsAgree,
 
 					};
-					var result =await _userManager.CreateAsync(user,model.Password);
+					var result = await _userManager.CreateAsync(user, model.Password);
 					if (result.Succeeded)
 					{
 						return RedirectToAction(nameof(SignIn));
 					}
-                    foreach (var error in result.Errors)
-                    {
-						ModelState.AddModelError(string.Empty, error.Description); 
-                    }
-                }
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError(string.Empty, error.Description);
+					}
+				}
 				else
 				{
 					ModelState.AddModelError(string.Empty, "this User Name is already in use for another account");
@@ -58,11 +59,49 @@ namespace C41_G02_MVC03.PL.Controllers
 			}
 			return View(model);
 		}
-        #endregion
-        public IActionResult SignIn()
-        {
+		#endregion
+		public IActionResult SignIn()
+		{
 			return View();
-        }
+		}
+		[HttpPost]
 
-    }
+		public async Task<IActionResult> SignIn(SignInViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(model.Email);
+				if (user != null)
+				{
+					var flag = await _userManager.CheckPasswordAsync(user, model.Password);
+					if (flag)
+					{
+						var result = _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+
+						if (result.IsCanceled)
+							ModelState.AddModelError(string.Empty, "Your Account is Locked !!");
+
+						if (result.IsFaulted)
+							ModelState.AddModelError(string.Empty, "Your Account is Not allowed Yet !!");
+
+						if (result.IsCompleted)
+							return RedirectToAction(nameof(HomeController.Index), "Home");
+
+
+
+					}
+					ModelState.AddModelError(string.Empty, "Invalid Login ");
+				}
+				
+			}
+			return View(model);
+		}
+	}
 }
+
+
+
+
+
+
+

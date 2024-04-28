@@ -27,7 +27,10 @@ namespace C41_G02_MVC03.PL.Extensions
 				options.Lockout.MaxFailedAccessAttempts = 5;
 				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(5);
 				options.User.RequireUniqueEmail = true;
-			}).AddEntityFrameworkStores<ApplicationDbContext>();
+			})
+					.AddEntityFrameworkStores<ApplicationDbContext>();
+
+
 		}
 
 	}

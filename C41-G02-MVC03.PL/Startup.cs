@@ -34,8 +34,6 @@ namespace C41_G02_MVC03.PL
             });
             services.AddApplicationServices(); //Extension method
             services.AddAutoMapper(M =>M.AddProfile(new MappingProfiles()));
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
