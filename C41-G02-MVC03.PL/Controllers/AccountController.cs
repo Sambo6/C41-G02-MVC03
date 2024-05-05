@@ -1,6 +1,6 @@
 ﻿using C41_G02_MVC03.DAL.Data;
 using C41_G02_MVC03.DAL.Models;
-using C41_G02_MVC03.PL.ViewModels.User;
+using C41_G02_MVC03.PL.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -60,43 +60,47 @@ namespace C41_G02_MVC03.PL.Controllers
 			return View(model);
 		}
 		#endregion
+
+		#region SignIn
 		public IActionResult SignIn()
 		{
 			return View();
 		}
-		[HttpPost]
 
+		[HttpPost]
 		public async Task<IActionResult> SignIn(SignInViewModel model)
 		{
 			if (ModelState.IsValid)
 			{
 				var user = await _userManager.FindByEmailAsync(model.Email);
-				if (user != null)
+
+				if (user is not  null)
 				{
 					var flag = await _userManager.CheckPasswordAsync(user, model.Password);
 					if (flag)
 					{
-						var result = _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+						var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
-						if (result.IsCanceled)
+						if (result.IsLockedOut)
 							ModelState.AddModelError(string.Empty, "Your Account is Locked !!");
 
-						if (result.IsFaulted)
-							ModelState.AddModelError(string.Empty, "Your Account is Not allowed Yet !!");
-
-						if (result.IsCompleted)
+						if (result.Succeeded)
 							return RedirectToAction(nameof(HomeController.Index), "Home");
 
+						if (result.IsNotAllowed)
+							ModelState.AddModelError(string.Empty, "Your Account is Not Confirmed Yet !!");
 
 
-					}
-					ModelState.AddModelError(string.Empty, "Invalid Login ");
+					}				
 				}
-				
+
+				ModelState.AddModelError(string.Empty, "Invalid Login ");
 			}
+
 			return View(model);
-		}
-	}
+		} 
+		#endregion
+	}																						   
 }
 
 

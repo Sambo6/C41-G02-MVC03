@@ -30,7 +30,22 @@ namespace C41_G02_MVC03.PL.Extensions
 			})
 					.AddEntityFrameworkStores<ApplicationDbContext>();
 
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = "/Account/SignIn";
+				options.ExpireTimeSpan = TimeSpan.FromDays(1);
+				options.AccessDeniedPath = "/Home/Error";
+			});
 
+			services.AddAuthentication(options =>
+			{
+				//options.DefaultAuthenticateScheme = "Identity.Application";
+			}).AddCookie("Hamada", options =>
+			{
+				options.LoginPath = "/Account/SignIn";
+				options.ExpireTimeSpan = TimeSpan.FromDays(1);
+				options.AccessDeniedPath = "/Home/Error";
+			});
 		}
 
 	}

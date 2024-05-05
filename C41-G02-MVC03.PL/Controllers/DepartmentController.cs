@@ -9,9 +9,10 @@ using System;
 using System.Threading.Tasks;
 namespace C41_G02_MVC03.PL.Controllers
 {
-    // Inheritance :  DepartmentController is a Controller
-    // Composition :  DepartmentController is DepartmentRepository
-    public class DepartmentController : Controller
+	// Inheritance :  DepartmentController is a Controller
+	// Composition :  DepartmentController is DepartmentRepository
+	[Authorize]
+	public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;

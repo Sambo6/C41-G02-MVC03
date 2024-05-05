@@ -1,11 +1,9 @@
 
 using C41_G02_MVC03.DAL.Data;
-using C41_G02_MVC03.DAL.Models;
 using C41_G02_MVC03.PL.Extensions;
 using C41_G02_MVC03.PL.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace C41_G02_MVC03.PL
 {
-    public class Startup
+	public class Startup
     {
         public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
@@ -34,7 +32,10 @@ namespace C41_G02_MVC03.PL
             });
             services.AddApplicationServices(); //Extension method
             services.AddAutoMapper(M =>M.AddProfile(new MappingProfiles()));
-        }
+
+			
+			
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,8 +52,13 @@ namespace C41_G02_MVC03.PL
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",

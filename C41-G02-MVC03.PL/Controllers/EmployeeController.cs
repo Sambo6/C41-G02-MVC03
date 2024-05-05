@@ -1,26 +1,22 @@
 ﻿using AutoMapper;
 using C41_G02_MVC03.BLL.Interfaces;
 using C41_G02_MVC03.BLL.Repositories;
-using C41_G02_MVC03.DAL.Data.Migrations;
-using C41_G02_MVC03.DAL.Models;
 using C41_G02_MVC03.PL.Helper;
 using C41_G02_MVC03.PL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Employee = C41_G02_MVC03.DAL.Models.Employee;
 
 namespace C41_G02_MVC03.PL.Controllers
 {
-    public class EmployeeController : Controller
+	[Authorize]
+	public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;

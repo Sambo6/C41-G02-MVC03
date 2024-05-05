@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace C41_G02_MVC03.PL.ViewModels.User
+namespace C41_G02_MVC03.PL.ViewModels.Account
 {
     public class SignInViewModel
     {

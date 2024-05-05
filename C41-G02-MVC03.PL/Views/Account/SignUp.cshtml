@@ -8,14 +8,17 @@
 <div class="main-agileinfo">
 	<div class="agileits-top">
 		<form asp-action="SignUp" method="post">
-			
-			<input class="text hamada" asp-for="FirstName" placeholder="First Name" required="">
+			<div asp-validation-summary="ModelOnly"></div>
 
-			<input class="text hamada" asp-for="LastName" placeholder="Last Name" required="">		
+			<input class="text email hamada" asp-for="FirstName" placeholder="First Name" required="">
+
+			<input class="text email hamada" asp-for="LastName" placeholder="Last Name" required="">
+
+			<input class="text email hamada" asp-for="UserName" placeholder="User Name" required="">
 			
-			<input class="text hamada" asp-for="Email" name="email" placeholder="Email" required="">
+			<input class="text email hamada" asp-for="Email" name="email" placeholder="Email" required="">
 			
-			<input class="text hamada" asp-for="Password" placeholder="Password" required="">
+			<input class="text email hamada" asp-for="Password" placeholder="Password" required="">
 			
 			<input class="text hamada w3lpass" asp-for="ConfirmPassword" placeholder="Confirm Password" required="">
 			<div class="wthree-text">
@@ -25,7 +28,7 @@
 				</label>
 				<div class="clear"> </div>
 			</div>
-			<input type="submit" value="SIGNUP">
+			<input type="submit" value="signup">
 		</form>
 		<p>Do you have an Account? <a asp-action="SignIn"> Login Now!</a></p>
 	</div>
