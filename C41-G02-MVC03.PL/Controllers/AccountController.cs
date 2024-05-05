@@ -98,7 +98,16 @@ namespace C41_G02_MVC03.PL.Controllers
 			}
 
 			return View(model);
-		} 
+		}
+		#endregion
+
+		#region SignOut
+
+		public async new Task<IActionResult> SignOut()
+		{
+			await _signInManager.SignOutAsync();
+			return RedirectToAction(nameof(SignIn));
+		}
 		#endregion
 	}																						   
 }
