@@ -1,4 +1,5 @@
 ﻿using C41_G02_MVC03.PL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.PL.Controllers
 {
-    public class HomeController : Controller
+	[Authorize]
+	public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -28,7 +30,8 @@ namespace C41_G02_MVC03.PL.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		[AllowAnonymous]
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() 
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

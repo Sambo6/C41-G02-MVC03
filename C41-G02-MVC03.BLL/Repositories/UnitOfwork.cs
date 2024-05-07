@@ -44,13 +44,11 @@ namespace C41_G02_MVC03.BLL.Repositories
 
             return _Repositories[key] as IGenericRepository<T>;
         }
-        public int Complete()
+        public async Task<int> Complete()
+            => await _dbContext.SaveChangesAsync();
+        public async ValueTask DisposeAsync()
         {
-            return _dbContext.SaveChanges();
-        }
-        public void Dispose()
-        {
-            _dbContext.Dispose(); //Close Connections
+            await _dbContext.DisposeAsync(); //Close Connections
         }
 
 

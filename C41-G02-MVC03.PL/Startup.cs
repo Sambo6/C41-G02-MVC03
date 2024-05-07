@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace C41_G02_MVC03.PL
 {
-    public class Startup
+	public class Startup
     {
         public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
@@ -23,6 +23,7 @@ namespace C41_G02_MVC03.PL
         // This method gets called by the runtime. Use this method to add services to the DepInj container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddControllersWithViews(); // Required by MVC
             // Dependence Injection
             services.AddDbContext<ApplicationDbContext>(Options =>
@@ -31,7 +32,10 @@ namespace C41_G02_MVC03.PL
             });
             services.AddApplicationServices(); //Extension method
             services.AddAutoMapper(M =>M.AddProfile(new MappingProfiles()));
-        }
+
+			
+			
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,8 +52,13 @@ namespace C41_G02_MVC03.PL
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",

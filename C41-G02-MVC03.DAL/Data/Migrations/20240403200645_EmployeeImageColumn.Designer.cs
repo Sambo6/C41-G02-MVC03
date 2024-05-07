@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace C41_G02_MVC03.DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240328045751_Lest01")]
-    partial class Lest01
+    [Migration("20240403200645_EmployeeImageColumn")]
+    partial class EmployeeImageColumn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,14 +71,11 @@ namespace C41_G02_MVC03.DAL.Data.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmployeeType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
