@@ -3,6 +3,7 @@ using C41_G02_MVC03.BLL.Repositories;
 using C41_G02_MVC03.DAL.Data;
 using C41_G02_MVC03.DAL.Models;
 using C41_G02_MVC03.PL.Helper;
+using C41_G02_MVC03.PL.Services.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +16,7 @@ namespace C41_G02_MVC03.PL.Extensions
 		{
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
+			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 			{
 				options.Password.RequiredUniqueChars = 2;
@@ -28,7 +30,8 @@ namespace C41_G02_MVC03.PL.Extensions
 				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(5);
 				options.User.RequireUniqueEmail = true;
 			})
-					.AddEntityFrameworkStores<ApplicationDbContext>();
+					.AddEntityFrameworkStores<ApplicationDbContext>()
+					.AddDefaultTokenProviders();
 
 			services.ConfigureApplicationCookie(options =>
 			{
