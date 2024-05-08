@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using C41_G02_MVC03.DAL.Data.Migrations;
 using System;
-using C41_G02_MVC03.DAL.Data.Migrations;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace C41_G02_MVC03.PL.ViewModels
 {

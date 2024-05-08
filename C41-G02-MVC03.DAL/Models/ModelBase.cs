@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace C41_G02_MVC03.DAL.Models
+﻿namespace C41_G02_MVC03.DAL.Models
 {
-    public abstract class ModelBase
+	public abstract class ModelBase
     {
         public int Id { get; set; }
     }
