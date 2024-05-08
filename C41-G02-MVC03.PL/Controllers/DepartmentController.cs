@@ -1,5 +1,4 @@
 ﻿using C41_G02_MVC03.BLL.Interfaces;
-using C41_G02_MVC03.DAL.Data.Migrations;
 using C41_G02_MVC03.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;

@@ -1,12 +1,11 @@
 ﻿using C41_G02_MVC03.DAL.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using System;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace C41_G02_MVC03.PL.ViewModels
 {
-    public class EmployeeViewModel
+	public class EmployeeViewModel
     {
 
 

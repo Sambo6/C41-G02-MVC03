@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 namespace C41_G02_MVC03.DAL.Models
 {
 
 
-    public class Employee : ModelBase
+	public class Employee : ModelBase
     {
 
         

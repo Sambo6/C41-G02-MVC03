@@ -1,18 +1,11 @@
-﻿using C41_G02_MVC03.DAL.Data.Configurations;
-using C41_G02_MVC03.DAL.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using C41_G02_MVC03.DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.DAL.Data
 {
-    public class ApplicationDbContext :IdentityDbContext<ApplicationUser>
+	public class ApplicationDbContext :IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

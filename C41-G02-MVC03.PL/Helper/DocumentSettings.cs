@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.PL.Helper
 {
-    public static class DocumentSettings
+	public static class DocumentSettings
     {
         public static async Task<string> UploadFile(IFormFile file,string FolderName)
         {

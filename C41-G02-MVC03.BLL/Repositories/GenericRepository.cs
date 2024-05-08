@@ -2,18 +2,15 @@
 using C41_G02_MVC03.DAL.Data;
 using C41_G02_MVC03.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 
 
 namespace C41_G02_MVC03.BLL.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : ModelBase
+	public class GenericRepository<T> : IGenericRepository<T> where T : ModelBase
     {
         private protected  readonly ApplicationDbContext _dbContext;
         public GenericRepository(ApplicationDbContext dbContext) //Ask CLR to create Object from "ApplicationDbContext"

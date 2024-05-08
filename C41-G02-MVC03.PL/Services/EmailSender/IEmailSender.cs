@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.PL.Services.EmailSender
 {

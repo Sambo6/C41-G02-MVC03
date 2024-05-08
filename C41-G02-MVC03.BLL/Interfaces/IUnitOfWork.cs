@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace C41_G02_MVC03.BLL.Interfaces
 {
-    public interface IUnitOfWork :IAsyncDisposable
+	public interface IUnitOfWork :IAsyncDisposable
     {
         
         IGenericRepository<T> Repository<T>() where T : ModelBase;

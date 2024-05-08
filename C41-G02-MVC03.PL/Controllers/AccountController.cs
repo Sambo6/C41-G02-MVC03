@@ -1,13 +1,10 @@
-﻿using C41_G02_MVC03.DAL.Data;
-using C41_G02_MVC03.DAL.Models;
+﻿using C41_G02_MVC03.DAL.Models;
 using C41_G02_MVC03.PL.Services.EmailSender;
 using C41_G02_MVC03.PL.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
 
 namespace C41_G02_MVC03.PL.Controllers
 {

@@ -1,8 +1,7 @@
-﻿using System.Globalization;
-using System.Net.Mail;
+﻿using Microsoft.Extensions.Configuration;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 
 namespace C41_G02_MVC03.PL.Services.EmailSender
